@@ -38,7 +38,6 @@ def viewSwitch(request, switchname):
       label = []
       
       for i,sd in enumerate(switchData):
-        temptimestamp = datetime.datetime.utcfromtimestamp(int(sd.timestamp)) 
 
         data.append({
           'status': (1 if sd.status else 0),
@@ -47,8 +46,6 @@ def viewSwitch(request, switchname):
 
         if i == 0 or i == len(switchData)-1:
           label.append(int(sd.timestamp))
-
-      # pddata = pd.DataFrame(data)
 
       print(label)
       
