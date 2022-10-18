@@ -1,0 +1,114 @@
+{% extends "inventory/base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if title %}
+        {{ title }}
+    {% else %}
+        Dashboard
+    {% endif %} 
+{% endblock title %}
+
+
+{% block content %}
+
+<div class="container-fluid col">
+	
+	<div class="card card-body">
+		<div>
+			<h5 class="title-section" style="float:left;">Inventory Dashboard</h5>
+		</div>
+		
+		<hr>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Supplier Name</th>
+          <th scope="col">Availability</th>
+        </tr>
+      </thead>
+      <tbody id='tbody'>
+        
+      </tbody>
+    </table>
+    
+	</div>
+	
+</div>
+  
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+  $(document).ready( function () {
+    var base = {{base}}
+
+    if(base === true){
+      $.ajax({
+        url : "{% url 'viewInventoryApi' %}",
+        type : "GET",
+        dataType : "json",
+        success : function(results){
+          console.log('This is the first method', results)
+          if(results && results.length > 0){
+            results.forEach((result, index) => {
+              $('#tbody').append(
+              `<tr>
+                <th scope="row">${index + 1}</th>
+                <td>${result.name}</td>
+                <td>${result.supplier}</td>
+                <td>${ result.availability ? 'Yes' : 'No' }</td>
+              </tr>`)
+            })
+          } else {
+            $('#tbody').append(
+              `<tr>
+                <th scope="row"> - </th>
+                <td>No Data</td>
+                <td>No Data</td>
+                <td>No Data</td>
+              </tr>`)
+          }
+          
+        }
+      })
+    } else {
+      $.ajax({
+        url : "{% url 'viewSingleInventoryApi' name %}",
+        type : "GET",
+        dataType : "json",
+        success : function(results){
+          console.log('This is the second method', results)
+          if(!results.response){
+            results.forEach((result, index) => {
+              $('#tbody').append(
+              `<tr>
+                <th scope="row">${index + 1}</th>
+                <td>${result.name}</td>
+                <td>${result.supplier}</td>
+                <td>${ result.availability ? 'Yes' : 'No' }</td>
+              </tr>`)
+            })
+          } else {
+            $('#tbody').append(
+              `<tr>
+                <th scope="row"> - </th>
+                <td>No Data</td>
+                <td>No Data</td>
+                <td>No Data</td>
+              </tr>`)
+          }
+          
+        }
+      })
+    }
+
+  })
+</script>
+
+{% endblock %}
+  

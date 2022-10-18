@@ -1,0 +1,47 @@
+{% extends "inventory/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {% if title %}
+        {{ title }}
+    {% else %}
+        Dashboard
+    {% endif %} 
+{% endblock title %}
+
+
+{% block content %}
+
+<div class="container-fluid col">
+	
+	<div class="card card-body">
+		<div>
+			<h5 class="title-section" style="float:left;">View Inventory</h5>
+      <a href="{% url 'viewInventories' %}" style="float:right;" class="btn btn-info">Back</a>
+		</div>
+		
+		<hr>
+
+    <div>
+      <img src="{% static 'inventory/images/inventory.jpg' %}" class="rounded mx-auto d-block" style="max-height: 400px;max-width: 400px;" alt="Inventory Image">
+    </div>
+
+    {% crispy form %}
+    
+	</div>
+	
+</div>
+  
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+  $(document).ready( function () {
+
+  })
+</script>
+
+{% endblock %}
+  
